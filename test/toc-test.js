@@ -326,15 +326,89 @@ assert.strictEqual(fmResult.frontmatter.author, 'Elena Rostova');
 assert.deepStrictEqual(fmResult.frontmatter.tags, ['raft', 'paxos', 'replication']);
 assert.strictEqual(fmResult.frontmatter.status, 'Production');
 
+// Test BOM (Byte Order Mark) & trailing space resilience
+const bomFm = '\uFEFF---\r\ntitle: "BOM Systems"\r\nauthor: Admin  \r\n---\r\n# Hello';
+const bomResult = extractFrontmatter(bomFm);
+assert(bomResult.frontmatter, 'BOM frontmatter failed to parse');
+assert.strictEqual(bomResult.frontmatter.title, 'BOM Systems');
+assert.strictEqual(bomResult.frontmatter.author, 'Admin');
+
 const fmHtml = renderTemplate({ markdown: sampleWithFm });
 assert(fmHtml.includes('class="frontmatter-card"'), 'Frontmatter card missing from rendered HTML');
 assert(fmHtml.includes('class="frontmatter-tag">raft</span>'), 'Tag raft missing from frontmatter card');
 assert(fmHtml.includes('class="frontmatter-key">author</span>'), 'Key author missing from frontmatter card');
+assert(fmHtml.includes('contenteditable="false"'), 'Frontmatter card should have contenteditable="false"');
+assert(fmHtml.includes('data-raw-frontmatter='), 'Frontmatter card should have data-raw-frontmatter attribute');
+assert(!fmHtml.includes('data-slug="title-distributed-consensus"'), 'Frontmatter leaked into outline TOC slug');
+assert(!fmHtml.includes('<h2 id="title-distributed-consensus'), 'Frontmatter rendered as setext H2 heading');
+
+// Verify sample.md rendering integrity
+const sampleMdContent = fs.readFileSync(path.join(__dirname, '..', 'sample.md'), 'utf8');
+const sampleRendered = renderTemplate({ markdown: sampleMdContent });
+assert(sampleRendered.includes('class="frontmatter-card"'), 'sample.md frontmatter card missing');
+assert(!sampleRendered.includes('data-slug="title-the-architecture-of-resilient-systems"'), 'sample.md frontmatter leaked into TOC outline');
+assert(!sampleRendered.includes('<h2 id="title-the-architecture'), 'sample.md frontmatter leaked as setext H2');
+
 assert(fmHtml.includes('class="task-checkbox"'), 'Interactive task checkbox class missing');
 assert(!fmHtml.includes('task-checkbox" disabled'), 'Task checkbox should not have disabled attribute');
 assert(fmHtml.includes('handleTaskCheckboxToggle'), 'handleTaskCheckboxToggle function missing');
 assert(fmHtml.includes('copyCode'), 'copyCode function missing');
 
-console.log('✔ All TOC, Outline, Responsive, Zen, Wide, Raw, Logo, Favicon, Table Tools, ASCII Aligner, Print Pagination, Toast, Client JS, In-Page Search, Headless PDF, YAML Frontmatter, Interactive Tasks, Windows, macOS, Linux & Tauri Architecture checks passed successfully.');
+// Test 11: Verify Industry-Standard Installer Manifests & Tauri Packaging Configurations
+const installerDir = path.join(__dirname, '..', 'installer');
+const expectedInstallerFiles = [
+  path.join(installerDir, 'README.md'),
+  path.join(installerDir, 'windows', 'winget', 'dotmd.yaml'),
+  path.join(installerDir, 'macos', 'homebrew', 'dotmd.rb'),
+  path.join(installerDir, 'linux', 'dot-md.desktop'),
+  path.join(installerDir, 'linux', 'dot-md.xml')
+];
+
+for (const filePath of expectedInstallerFiles) {
+  assert(fs.existsSync(filePath), `Missing industry standard installer file: ${filePath}`);
+  const stat = fs.statSync(filePath);
+  assert(stat.size > 0, `Installer file is empty: ${filePath}`);
+}
+
+// Verify WinGet manifest schema
+const wingetContent = fs.readFileSync(path.join(installerDir, 'windows', 'winget', 'dotmd.yaml'), 'utf8');
+assert(wingetContent.includes('PackageIdentifier: dotmd.dotmd'), 'Invalid WinGet package identifier');
+assert(wingetContent.includes('InstallerType: nullsoft'), 'WinGet missing NSIS installer type');
+assert(wingetContent.includes('InstallerType: wix'), 'WinGet missing WiX MSI installer type');
+
+// Verify Homebrew Cask formula
+const brewContent = fs.readFileSync(path.join(installerDir, 'macos', 'homebrew', 'dotmd.rb'), 'utf8');
+assert(brewContent.includes('cask "dotmd"'), 'Invalid Homebrew Cask definition');
+assert(brewContent.includes('.dmg'), 'Homebrew Cask missing DMG URL');
+assert(brewContent.includes('app "dot md.app"'), 'Homebrew Cask missing app stanza');
+
+// Verify Freedesktop Linux specifications
+const linuxDesktopContent = fs.readFileSync(path.join(installerDir, 'linux', 'dot-md.desktop'), 'utf8');
+assert(linuxDesktopContent.includes('[Desktop Entry]'), 'Linux desktop file missing [Desktop Entry]');
+assert(linuxDesktopContent.includes('MimeType=text/markdown;'), 'Linux desktop file missing Markdown MIME');
+
+const mimeContent = fs.readFileSync(path.join(installerDir, 'linux', 'dot-md.xml'), 'utf8');
+assert(mimeContent.includes('xmlns="http://www.freedesktop.org/standards/shared-mime-info"'), 'Linux XML missing shared-mime-info namespace');
+
+// Verify Tauri v2 Bundle Configuration for Industry-Standard Targets
+const tauriConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'src-tauri', 'tauri.conf.json'), 'utf8'));
+assert(tauriConfig.bundle, 'Missing bundle in tauri.conf.json');
+assert.strictEqual(tauriConfig.bundle.targets, 'all', 'Bundle targets must be "all"');
+assert(tauriConfig.bundle.windows.wix, 'Missing WiX MSI target in tauri.conf.json');
+assert(tauriConfig.bundle.windows.nsis, 'Missing NSIS target in tauri.conf.json');
+assert(tauriConfig.bundle.macOS.dmg, 'Missing DMG target in tauri.conf.json');
+assert(tauriConfig.bundle.linux.deb, 'Missing DEB target in tauri.conf.json');
+assert(tauriConfig.bundle.linux.appimage, 'Missing AppImage target in tauri.conf.json');
+assert(Array.isArray(tauriConfig.bundle.fileAssociations), 'Missing file associations array');
+assert(tauriConfig.bundle.publisher === 'The Software Co.', 'Tauri bundle publisher must be "The Software Co."');
+assert(wingetContent.includes('Publisher: The Software Co.'), 'WinGet manifest publisher must be "The Software Co."');
+
+const pkgJson = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8'));
+assert.strictEqual(pkgJson.author, 'The Software Co.', 'package.json author must be "The Software Co."');
+
+const cargoContent = fs.readFileSync(path.join(__dirname, '..', 'src-tauri', 'Cargo.toml'), 'utf8');
+assert(cargoContent.includes('authors = ["The Software Co."]'), 'Cargo.toml authors must be ["The Software Co."]');
+
+console.log('✔ All TOC, Outline, Responsive, Zen, Wide, Raw, Logo, Favicon, Table Tools, ASCII Aligner, Print Pagination, Toast, Client JS, In-Page Search, Headless PDF, YAML Frontmatter, Interactive Tasks, Windows, macOS, Linux & Industry Standard Installer checks passed successfully.');
 
 

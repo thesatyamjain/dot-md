@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.singleton.1.6.0.schema.json
+PackageIdentifier: dotmd.dotmd
+PackageVersion: 1.0.0
+PackageName: dot md
+Publisher: The Software Co.
+License: MIT
+LicenseUrl: https://github.com/dotmd/dot-md/blob/main/LICENSE
+ShortDescription: Publication-grade Markdown editor and viewer with instant live reload
+Description: |
+  dot md turns Markdown into publication-grade editorial documents with sub-50ms live preview,
+  sticky outline table of contents, LaTeX math rendering via KaTeX, Mermaid diagrams,
+  in-page search, and standalone HTML/PDF export.
+Moniker: dotmd
+Tags:
+  - markdown
+  - viewer
+  - editor
+  - preview
+  - katex
+  - mermaid
+Commands:
+  - dotmd
+  - dot-md
+FileExtensions:
+  - md
+  - markdown
+  - mdown
+Installers:
+  - Architecture: x64
+    InstallerType: nullsoft
+    InstallerUrl: https://github.com/dotmd/dot-md/releases/download/v1.0.0/dot-md_1.0.0_x64-setup.exe
+    InstallerSha256: 0000000000000000000000000000000000000000000000000000000000000000
+    Scope: user
+  - Architecture: x64
+    InstallerType: wix
+    InstallerUrl: https://github.com/dotmd/dot-md/releases/download/v1.0.0/dot-md_1.0.0_x64_en-US.msi
+    InstallerSha256: 0000000000000000000000000000000000000000000000000000000000000000
+    Scope: machine
+ManifestType: singleton
+ManifestVersion: 1.6.0

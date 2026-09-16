@@ -14,8 +14,6 @@
     "build": "tauri build",
     "install:desktop": "node bin/cli.js --install",
     "uninstall:desktop": "node bin/cli.js --uninstall",
-    "install:posix": "sh scripts/install.sh",
-    "uninstall:posix": "sh scripts/uninstall.sh",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build"
@@ -33,7 +31,7 @@
     "katex",
     "mermaid"
   ],
-  "author": "",
+  "author": "The Software Co.",
   "license": "MIT",
   "dependencies": {
     "marked": "^15.0.7"

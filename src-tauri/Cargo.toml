@@ -2,7 +2,7 @@
 name = "dot-md"
 version = "1.0.0"
 description = "Publication-grade Markdown editor and standalone viewer"
-authors = ["dot md team"]
+authors = ["The Software Co."]
 edition = "2021"
 
 [[bin]]

@@ -30,6 +30,10 @@
   "bundle": {
     "active": true,
     "targets": "all",
+    "publisher": "The Software Co.",
+    "copyright": "Copyright © The Software Co.",
+    "shortDescription": "Publication-grade Markdown editor and standalone viewer",
+    "longDescription": "Publication-grade Markdown editor and standalone viewer by The Software Co.",
     "icon": [
       "../favicon.ico",
       "../favicon.svg"
@@ -46,15 +50,29 @@
     "windows": {
       "wix": {
         "language": "en-US"
+      },
+      "nsis": {
+        "displayLanguageSelector": false
       }
     },
     "macOS": {
       "frameworks": [],
-      "minimumSystemVersion": "10.13"
+      "minimumSystemVersion": "10.13",
+      "dmg": {
+        "windowSize": {
+          "width": 600,
+          "height": 400
+        }
+      }
     },
     "linux": {
       "deb": {
-        "depends": ["libwebkit2gtk-4.1-0 | libwebkit2gtk-4.0-37"]
+        "depends": ["libwebkit2gtk-4.1-0 | libwebkit2gtk-4.0-37"],
+        "section": "editors",
+        "priority": "optional"
+      },
+      "appimage": {
+        "bundleMediaFramework": false
       }
     }
   }

@@ -70,44 +70,56 @@
 
 ## Installation & OS Integration
 
+`dot md` adheres strictly to industry standard packaging toolchains across all supported platforms.
+
 ### Windows
-- **1-Click Standalone Installer (`installer/`)**:
-  - Run [`installer/dotmd-setup.exe`](file:///e:/md-visual/installer/dotmd-setup.exe) or [`installer/Install-dotmd.cmd`](file:///e:/md-visual/installer/Install-dotmd.cmd) for instant, zero-dependency installation.
-  - Registers `.md`, `.markdown`, and `.mdown` file associations with custom application icons in Windows File Explorer.
-  - Adds *"Open with dot md"* right-click context menu and registers with Windows Installed Apps (*Add or Remove Programs*).
-  - To uninstall: double-click [`installer/Uninstall-dotmd.cmd`](file:///e:/md-visual/installer/Uninstall-dotmd.cmd) or run `dotmd-setup.exe /uninstall`.
-- **CLI Shell Integration**:
-  - Run `dotmd --install` (or `node bin/cli.js --install` / `npm run install:desktop`) to trigger automated silent registration.
-  - To remove: `dotmd --uninstall` (or `npm run uninstall:desktop`).
-- **Tauri Native Desktop Bundle**:
-  - Run `npm run tauri:build` (or `scripts/build-tauri.bat`) to compile native WiX `.msi` and NSIS `.exe` installers.
-  - Automated toolchain configuration: `powershell -ExecutionPolicy Bypass -File scripts/setup-tauri.ps1`.
+- **Microsoft Windows Installer (MSI)**:
+  - Enterprise-grade `.msi` package generated with the WiX Toolset.
+  - Silent/GPO deployable: `msiexec /i dot-md_x64_en-US.msi /quiet`
+  - Registers standard Windows uninstall entry and `.md` file associations.
+- **NSIS Setup (.exe)**:
+  - Standard user-space setup wizard with automatic UAC elevation, desktop shortcuts, Start Menu integration, and right-click *"Open with dot md"* context menu.
+- **Windows Package Manager (WinGet)**:
+  - Official Microsoft WinGet manifest ([`installer/windows/winget/dotmd.yaml`](file:///e:/md-visual/installer/windows/winget/dotmd.yaml)):
+    ```cmd
+    winget install dotmd
+    ```
 
 ### macOS
-- **One-Command Setup**:
-  ```bash
-  sh scripts/install.sh
-  # or via npm / npx
-  npx dotmd --install
-  ```
-- **Components Installed**:
-  - Registers `dot md.app` in `~/Applications` with `.md`, `.markdown`, and `.mdown` document types.
-  - Links to macOS LaunchServices for Finder double-click and *"Open With..."*.
-  - Installs global `dotmd` command in `/usr/local/bin` (or `~/.local/bin`).
-- **Uninstallation**: `sh scripts/uninstall.sh` or `dotmd --uninstall`.
+- **Apple Disk Image (.dmg)**:
+  - Industry standard `.dmg` volume. Double-click to open and drag `dot md.app` into `/Applications`.
+  - Configured with `CFBundleDocumentTypes` for native Finder double-click handling of `.md`, `.markdown`, and `.mdown` files.
+- **Homebrew Cask**:
+  - Official Cask formula ([`installer/macos/homebrew/dotmd.rb`](file:///e:/md-visual/installer/macos/homebrew/dotmd.rb)):
+    ```bash
+    brew install --cask dotmd
+    ```
 
 ### Linux (Ubuntu, Debian, Fedora, Arch)
-- **One-Command Setup**:
+- **Debian Package (.deb)**:
+  - Standard package for Debian, Ubuntu, Mint, and Pop!_OS:
+    ```bash
+    sudo apt install ./dot-md_amd64.deb
+    ```
+  - Automatically installs `/usr/share/applications/dot-md.desktop`, hicolor SVG icon, and registers MIME database associations.
+- **Universal AppImage**:
+  - Standalone portable binary that runs on any Linux distribution with zero dependencies:
+    ```bash
+    chmod +x dot-md_amd64.AppImage
+    ./dot-md_amd64.AppImage
+    ```
+- **XDG Desktop Standards**:
+  - Freedesktop specification files located in [`installer/linux/`](file:///e:/md-visual/installer/linux/).
+
+### Universal CLI (Any OS)
+- **NPM Global Package**:
   ```bash
-  sh scripts/install.sh
-  # or via npm / npx
-  npx dotmd --install
+  npm install -g dotmd
   ```
-- **Components Installed**:
-  - Installs Freedesktop desktop entry to `~/.local/share/applications/dot-md.desktop`.
-  - Installs scalable vector icon to system hicolor theme (`~/.local/share/icons/hicolor/scalable/apps/dot-md.svg`).
-  - Registers MIME associations for `text/markdown` and `text/x-markdown` via `xdg-mime`.
-- **Uninstallation**: `sh scripts/uninstall.sh` or `dotmd --uninstall`.
+- **Zero-Install Instant Run**:
+  ```bash
+  npx dotmd README.md
+  ```
 
 ---
 

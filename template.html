@@ -154,6 +154,8 @@
       display: flex;
       align-items: center;
       gap: 0.65rem;
+      min-width: 0;
+      flex: 0 1 auto;
       overflow: hidden;
     }
 
@@ -204,6 +206,42 @@
       font-weight: 300;
       user-select: none;
       opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    .header-file-info {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .doc-filename {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.92rem;
+      letter-spacing: -0.015em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--text-primary);
+      max-width: clamp(140px, 25vw, 360px);
+    }
+
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #2ea043;
+      box-shadow: 0 0 8px #2ea043;
+      animation: pulse-dot 2s infinite ease-in-out;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
     }
 
     .doc-badge {
@@ -217,49 +255,22 @@
       background: var(--badge-bg);
       color: var(--text-secondary);
       border: 1px solid var(--border-subtle);
+      flex-shrink: 0;
     }
 
-    .header-center {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      max-width: 40%;
-      pointer-events: none;
-      text-align: center;
-    }
-
-    .doc-filename {
-      font-family: var(--font-display);
-      font-weight: 600;
-      font-size: 0.95rem;
-      letter-spacing: -0.015em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      color: var(--text-primary);
-    }
-
-    .live-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #2ea043;
-      box-shadow: 0 0 8px #2ea043;
-      animation: pulse-dot 2s infinite ease-in-out;
-    }
-
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
+    .header-nav-sep {
+      width: 1px;
+      height: 18px;
+      background: var(--border-subtle);
+      margin: 0 0.15rem;
+      flex-shrink: 0;
     }
 
     .header-right {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.45rem;
+      flex-shrink: 0;
     }
 
     .btn-group {
@@ -1976,8 +1987,8 @@
 
     /* Tier 2: Medium Desktop & Windows Half-Snap (1025px - 1280px) */
     @media (max-width: 1280px) {
-      .header-center {
-        max-width: 25vw;
+      .doc-filename {
+        max-width: 240px;
       }
       .hide-on-compact {
         display: none !important;
@@ -1996,8 +2007,8 @@
       .mobile-only-btn {
         display: inline-flex;
       }
-      .header-center {
-        display: none !important;
+      .doc-filename {
+        max-width: 190px;
       }
       .hide-on-tablet {
         display: none !important;
@@ -2040,11 +2051,8 @@
       .brand-name {
         display: none !important;
       }
-      .header-separator {
-        display: none !important;
-      }
-      .header-center {
-        display: none !important;
+      .doc-filename {
+        max-width: 140px;
       }
       .hide-on-mobile {
         display: none !important;
@@ -2108,6 +2116,12 @@
       .top-header {
         height: 48px;
         padding: 0.35rem 0.5rem;
+      }
+      .header-separator {
+        display: none !important;
+      }
+      .doc-filename {
+        max-width: 110px;
       }
       .header-right {
         gap: 0.25rem;
@@ -2789,12 +2803,12 @@
         <span class="brand-logo"><svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="32" height="32" rx="7.5" fill="#12141a"/><rect x="0.75" y="0.75" width="30.5" height="30.5" rx="6.75" stroke="#f5f3ef" stroke-opacity="0.08" stroke-width="0.75"/><path d="M6.05 16.05 C5.73 16.05 5.46 15.95 5.25 15.75 C5.04 15.56 4.93 15.32 4.93 15.03 C4.93 14.74 5.04 14.5 5.26 14.31 C5.48 14.13 5.75 14.03 6.08 14.03 C6.41 14.03 6.67 14.13 6.88 14.32 C7.09 14.51 7.2 14.75 7.2 15.03 C7.2 15.33 7.09 15.57 6.88 15.76 C6.66 15.95 6.39 16.05 6.05 16.05 Z M18.6 15.89 L16.68 15.89 L16.68 12.33 C16.68 11.42 16.34 10.97 15.68 10.97 C15.36 10.97 15.1 11.11 14.9 11.38 C14.7 11.65 14.6 11.99 14.6 12.4 L14.6 15.89 L12.67 15.89 L12.67 12.29 C12.67 11.41 12.35 10.97 11.69 10.97 C11.36 10.97 11.1 11.1 10.9 11.36 C10.7 11.62 10.6 11.97 10.6 12.42 L10.6 15.89 L8.68 15.89 L8.68 9.64 L10.6 9.64 L10.6 10.62 L10.63 10.62 C10.83 10.29 11.11 10.02 11.47 9.81 C11.83 9.6 12.22 9.49 12.65 9.49 C13.53 9.49 14.14 9.88 14.46 10.66 C14.94 9.88 15.64 9.49 16.56 9.49 C17.92 9.49 18.6 10.33 18.6 12.01 Z M26.58 15.89 L24.65 15.89 L24.65 15.03 L24.63 15.03 C24.19 15.71 23.55 16.05 22.7 16.05 C21.91 16.05 21.29 15.77 20.81 15.22 C20.33 14.67 20.1 13.9 20.1 12.91 C20.1 11.88 20.36 11.05 20.88 10.43 C21.41 9.8 22.1 9.49 22.95 9.49 C23.75 9.49 24.31 9.78 24.63 10.36 L24.65 10.36 L24.65 6.64 L26.58 6.64 Z M24.69 12.85 L24.69 12.39 C24.69 11.98 24.57 11.64 24.34 11.37 C24.1 11.1 23.79 10.97 23.42 10.97 C22.99 10.97 22.65 11.14 22.41 11.47 C22.17 11.81 22.05 12.27 22.05 12.85 C22.05 13.4 22.17 13.83 22.4 14.12 C22.63 14.42 22.96 14.57 23.37 14.57 C23.76 14.57 24.08 14.41 24.32 14.1 C24.57 13.79 24.69 13.37 24.69 12.85 Z" fill="#f5f3ef"/><path d="M16 19.38V26.5M12.25 23.13L16 26.88L19.75 23.13" stroke="#f5f3ef" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         <span class="brand-name">dot md</span>
       </a>
-      
-    </div>
-
-    <div class="header-center">
-      
-      <span class="doc-filename" id="app-doc-title">dot md</span>
+      <span class="header-separator" aria-hidden="true">/</span>
+      <div class="header-file-info">
+        
+        <span class="doc-filename" id="app-doc-title" title="dot md">dot md</span>
+        
+      </div>
     </div>
 
     <div class="header-right">
@@ -2816,6 +2830,8 @@
         <button class="view-btn" id="view-raw-btn" onclick="setViewMode('raw')" role="tab" aria-selected="false" title="Raw Markdown Source (R)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 5.5L2.5 8 5 10.5M11 5.5l2.5 2.5L11 10.5M9.5 3.5l-3 9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Raw</span></button>
       </div>
 
+      <div class="header-nav-sep hide-on-mobile"></div>
+
       <!-- Outline Toggle Button (Desktop & Mobile) -->
       <button class="icon-btn active" id="toc-toggle-btn" onclick="toggleOutline()" title="Toggle Outline (O / Z)" aria-label="Toggle Outline">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 4h11M2.5 8h7.5M2.5 12h9.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
@@ -2830,6 +2846,8 @@
       <button class="icon-btn hide-on-tablet" id="wide-btn" onclick="toggleWide()" title="Wide view (W)" aria-label="Toggle wide view">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2.5h3.5v3.5M6 13.5H2.5V10M13.5 2.5l-4.5 4.5M2.5 13.5l4.5-4.5" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
+
+      <div class="header-nav-sep hide-on-tablet"></div>
 
       <!-- Theme Switcher -->
       <button class="icon-btn" onclick="cycleTheme()" title="Switch theme (T)" aria-label="Cycle theme">
@@ -2919,7 +2937,7 @@
         </span>
         <span>·</span>
         <span class="meta-tag">
-          Updated 4:39:40 pm
+          Updated 5:38:30 pm
         </span>
       </div>
 
@@ -3315,16 +3333,21 @@ if(__exports != exports)module.exports = exports;return module.exports}));
     }
 
     function extractClientFrontmatter(md) {
-      const match = (md || '').match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n/);
-      if (!match) return { frontmatter: null, body: md || '' };
+      if (!md) return { frontmatter: null, body: '', rawYaml: '' };
+
+      const cleanMd = (md || '').replace(/^\uFEFF/, '');
+      const match = cleanMd.match(/^(?:[ \t]*\r?\n)*---[ \t]*\r?\n([\s\S]*?)\r?\n(?:---|...)[ \t]*(?:\r?\n|$)/);
+      if (!match) return { frontmatter: null, body: cleanMd, rawYaml: '' };
 
       const rawYaml = match[1];
-      const body = (md || '').slice(match[0].length);
+      const body = cleanMd.slice(match[0].length);
       const data = {};
 
       const lines = rawYaml.split(/\r?\n/);
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith('#')) continue;
         const colonIdx = line.indexOf(':');
         if (colonIdx === -1) continue;
         const key = line.slice(0, colonIdx).trim();
@@ -3341,10 +3364,10 @@ if(__exports != exports)module.exports = exports;return module.exports}));
         data[key] = val;
       }
 
-      return { frontmatter: Object.keys(data).length > 0 ? data : null, body: body };
+      return { frontmatter: Object.keys(data).length > 0 ? data : null, body: body, rawYaml: rawYaml };
     }
 
-    function renderClientFrontmatterHtml(data) {
+    function renderClientFrontmatterHtml(data, rawYaml) {
       if (!data) return '';
       const entries = Object.entries(data);
       if (entries.length === 0) return '';
@@ -3365,7 +3388,8 @@ if(__exports != exports)module.exports = exports;return module.exports}));
         }
       }
 
-      return '<div class="frontmatter-card">' +
+      const encodedYaml = encodeURIComponent(rawYaml || '');
+      return '<div class="frontmatter-card" contenteditable="false" data-raw-frontmatter="' + encodedYaml + '">' +
         '<div class="frontmatter-header">' +
           '<span class="frontmatter-badge">Document Metadata</span>' +
         '</div>' +
@@ -3387,6 +3411,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       const fmRes = extractClientFrontmatter(markdown);
       const frontmatter = fmRes.frontmatter;
       const body = fmRes.body;
+      const rawYaml = fmRes.rawYaml;
 
       const mathStore = [];
       let protectedMd = body.replace(/\$\$([\s\S]+?)\$\$/g, (match, formula) => {
@@ -3416,7 +3441,10 @@ if(__exports != exports)module.exports = exports;return module.exports}));
         const slug = getUniqueSlug(slugify(text));
         if (depth <= 3) {
           const tocTitle = text.replace(/<a\b[^>]*>([\s\S]*?)<\/a>/gi, '$1').replace(/<!--[\s\S]*?-->/g, '').trim();
-          toc.push({ level: depth, title: tocTitle, slug: slug });
+          // Safety guard: do not add frontmatter blocks to outline
+          if (!tocTitle.includes('title:') || !tocTitle.includes('author:')) {
+            toc.push({ level: depth, title: tocTitle, slug: slug });
+          }
         }
         return '<h' + depth + ' id="' + slug + '" class="doc-heading doc-h' + depth + '">' +
           '<span class="heading-anchor" onclick="copyHeadingLink(this, \'' + slug + '\')" title="Copy link to section">#</span>' +
@@ -3503,7 +3531,7 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       });
 
       if (frontmatter) {
-        html = renderClientFrontmatterHtml(frontmatter) + html;
+        html = renderClientFrontmatterHtml(frontmatter, rawYaml) + html;
       }
 
       const plainText = body.replace(/<[^>]+>/g, '').replace(/[#*\x60_~[\]()]/g, '');
@@ -3929,12 +3957,12 @@ if(__exports != exports)module.exports = exports;return module.exports}));
 
       if (wasRaw && !isRaw && docContent && rawTextarea) {
         if (isDirty || isEditMode) {
-          if (typeof clientProcessMarkdown === 'function') {
+          if (typeof renderMarkdownDocument === 'function') {
+            const currentTitle = (window.__DOTMD_INITIAL_DATA__ && window.__DOTMD_INITIAL_DATA__.filename) || (document.getElementById('app-doc-title') ? document.getElementById('app-doc-title').textContent : '');
+            renderMarkdownDocument(rawTextarea.value, currentTitle);
+          } else if (typeof clientProcessMarkdown === 'function') {
             const processed = clientProcessMarkdown(rawTextarea.value);
             docContent.innerHTML = processed.html;
-            renderEnhancements();
-          } else if (window.marked && typeof marked.parse === 'function') {
-            docContent.innerHTML = marked.parse(rawTextarea.value);
             renderEnhancements();
           }
         }
@@ -4098,6 +4126,32 @@ if(__exports != exports)module.exports = exports;return module.exports}));
       }
 
       const tag = node.tagName.toLowerCase();
+
+      if (node.classList && node.classList.contains('frontmatter-card')) {
+        const rawAttr = node.getAttribute('data-raw-frontmatter');
+        if (rawAttr) {
+          try {
+            const decoded = decodeURIComponent(rawAttr).trim();
+            if (decoded) {
+              return '---\n' + decoded + '\n---\n\n';
+            }
+          } catch (e) {}
+        }
+        const rows = Array.from(node.querySelectorAll('.frontmatter-row'));
+        if (!rows.length) return '';
+        const lines = rows.map(r => {
+          const keyEl = r.querySelector('.frontmatter-key');
+          const key = keyEl ? keyEl.innerText.trim() : '';
+          const tags = Array.from(r.querySelectorAll('.frontmatter-tag')).map(t => t.innerText.trim());
+          if (tags.length) {
+            return key + ': [' + tags.join(', ') + ']';
+          }
+          const valEl = r.querySelector('.frontmatter-val');
+          const val = valEl ? valEl.innerText.trim() : '';
+          return key + ': ' + val;
+        });
+        return '---\n' + lines.join('\n') + '\n---\n\n';
+      }
 
       if (node.classList && node.classList.contains('mermaid-container')) {
         const src = node.getAttribute('data-mermaid-src') || (node.querySelector('pre.mermaid') ? node.querySelector('pre.mermaid').textContent : '');
