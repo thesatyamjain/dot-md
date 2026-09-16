@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Logs and Debugging
+*.log
+npm-debug.log*
+setup_error.log
+
+# OS Artifacts
+.DS_Store
+Thumbs.db
+
+# Test Exports & Generated Artifacts
+*.html
+!template.html
+*.pdf
+
+# Temporary build outputs
+*.obj
+*.pdb
+dot-md.exe.WebView2/
+WebView2Cache/
+
+# Tauri & Rust build artifacts
+src-tauri/target/
+src-tauri/gen/
+Cargo.lock
+
+# Agent scratch & logs
+.agents/
+

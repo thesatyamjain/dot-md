@@ -1,0 +1,44 @@
+{
+  "name": "dotmd",
+  "version": "1.0.0",
+  "description": "dot md - Turn Markdown into publication-grade editorial documents with instant live reload across Windows, macOS, and Linux",
+  "main": "bin/cli.js",
+  "bin": {
+    "dotmd": "./bin/cli.js",
+    "dot-md": "./bin/cli.js"
+  },
+  "scripts": {
+    "start": "node bin/cli.js sample.md",
+    "export": "node bin/cli.js sample.md --export",
+    "test": "node test/toc-test.js",
+    "build": "tauri build",
+    "install:desktop": "node bin/cli.js --install",
+    "uninstall:desktop": "node bin/cli.js --uninstall",
+    "install:posix": "sh scripts/install.sh",
+    "uninstall:posix": "sh scripts/uninstall.sh",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build"
+  },
+  "keywords": [
+    "markdown",
+    "viewer",
+    "editor",
+    "previewer",
+    "cross-platform",
+    "windows",
+    "macos",
+    "linux",
+    "live-reload",
+    "katex",
+    "mermaid"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "marked": "^15.0.7"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.2.0"
+  }
+}
