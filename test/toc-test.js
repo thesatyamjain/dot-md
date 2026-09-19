@@ -409,13 +409,20 @@ assert.strictEqual(pkgJson.author, 'The Software Co.', 'package.json author must
 const cargoContent = fs.readFileSync(path.join(__dirname, '..', 'src-tauri', 'Cargo.toml'), 'utf8');
 assert(cargoContent.includes('authors = ["The Software Co."]'), 'Cargo.toml authors must be ["The Software Co."]');
 
-// Test 12: Verify Lossless Native Vector Diagram Pan & Zoom
+// Test 12: Verify Lossless Native Vector Diagram Pan & Zoom & Viewport Framing
 const templateSrc = fs.readFileSync(path.join(__dirname, '..', 'lib', 'template.js'), 'utf8');
 assert(templateSrc.includes('applyViewBox'), 'applyViewBox missing in template.js');
 assert(templateSrc.includes('zoomAtPoint'), 'zoomAtPoint missing in template.js');
 assert(templateSrc.includes('.diagram-viewport'), '.diagram-viewport missing in template.js');
 assert(!templateSrc.includes('.diagram-canvas {'), 'Legacy .diagram-canvas CSS should be removed');
 assert(templateSrc.includes('diagram-zoom-badge'), 'diagram-zoom-badge missing in template.js');
+assert(templateSrc.includes('.diagram-fullscreen'), 'Fullscreen styles missing in template.js');
+assert(templateSrc.includes('.diagram-hint'), 'Scroll hint styles missing in template.js');
+assert(templateSrc.includes('calcBaseViewBox'), 'calcBaseViewBox aspect matching missing in template.js');
+assert(templateSrc.includes('toggleFullscreen'), 'toggleFullscreen missing in template.js');
+assert(templateSrc.includes('.mermaid-container svg .flowchart-link'), 'Flowchart link styles missing in template.js');
+assert(templateSrc.includes('fill: none !important'), 'fill: none !important override missing in template.js');
+assert(templateSrc.includes('xMidYMid meet'), 'xMidYMid meet aspect ratio missing in template.js');
 
 console.log('✔ All TOC, Outline, Responsive, Zen, Wide, Raw, Logo, Favicon, Table Tools, ASCII Aligner, Print Pagination, Toast, Client JS, In-Page Search, Headless PDF, YAML Frontmatter, Interactive Tasks, Windows, macOS, Linux, Industry Standard Installers & Lossless Vector Zoom checks passed successfully.');
 
