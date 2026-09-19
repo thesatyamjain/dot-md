@@ -29,25 +29,40 @@ pub struct AppState {
 fn get_initial_document(state: State<'_, AppState>) -> Result<DocumentPayload, String> {
     let file_opt = state.active_file.lock().map_err(|e| e.to_string())?.clone();
     let target_path = match file_opt {
-        Some(p) => p,
+        Some(p) => {
+            let path_str = p.to_string_lossy().to_string();
+            let clean = path_str.trim_matches('"').trim_matches('\'').to_string();
+            PathBuf::from(clean)
+        }
         None => {
             if Path::new("sample.md").exists() {
                 PathBuf::from("sample.md")
             } else if Path::new("README.md").exists() {
                 PathBuf::from("README.md")
             } else {
-                return Err("No Markdown file specified or found in directory.".into());
+                return Ok(DocumentPayload {
+                    filename: "Welcome.md".into(),
+                    file_path: "".into(),
+                    markdown: "# Welcome to dot md\n\nPublication-grade Markdown editor and standalone viewer.\n\n### Getting Started\n- Press **Ctrl+E** to edit this document in-place\n- Press **Ctrl+S** to save to disk\n- Press **T** to cycle themes (Dark / Light / Sepia)\n- Press **Z** for Zen reading mode\n- Press **W** to toggle Wide view\n".into(),
+                });
             }
         }
     };
 
-    let canonical = target_path.canonicalize().unwrap_or(target_path);
-    let filename = canonical
+    let filename = target_path
         .file_name()
         .map(|f| f.to_string_lossy().to_string())
         .unwrap_or_else(|| "document.md".into());
-    let file_path = canonical.to_string_lossy().to_string();
-    let markdown = fs::read_to_string(&canonical).map_err(|e| e.to_string())?;
+    let file_path = target_path.to_string_lossy().to_string();
+
+    let markdown = fs::read_to_string(&target_path)
+        .or_else(|_| {
+            let canonical = target_path.canonicalize().unwrap_or(target_path.clone());
+            fs::read_to_string(&canonical)
+        })
+        .unwrap_or_else(|e| {
+            format!("# {}\n\n*Unable to read file contents: {}*", filename, e)
+        });
 
     Ok(DocumentPayload {
         filename,
@@ -143,8 +158,29 @@ fn setup_file_watcher(app_handle: AppHandle, target_file: PathBuf, internal_flag
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let initial_file = args.into_iter().skip(1).find(|arg| !arg.starts_with('-'));
-    let file_path_buf = initial_file.map(PathBuf::from);
+    let mut target_file: Option<PathBuf> = None;
+
+    if args.len() > 1 {
+        for arg in args.iter().skip(1) {
+            let clean = arg.trim_matches('"').trim_matches('\'');
+            if !clean.starts_with('-') && Path::new(clean).exists() {
+                target_file = Some(PathBuf::from(clean));
+                break;
+            }
+        }
+        if target_file.is_none() {
+            let joined: String = args.iter().skip(1).filter(|a| !a.starts_with('-')).cloned().collect::<Vec<_>>().join(" ");
+            let clean_joined = joined.trim_matches('"').trim_matches('\'');
+            if !clean_joined.is_empty() && Path::new(clean_joined).exists() {
+                target_file = Some(PathBuf::from(clean_joined));
+            } else if let Some(first) = args.iter().skip(1).find(|a| !a.starts_with('-')) {
+                let clean_first = first.trim_matches('"').trim_matches('\'');
+                target_file = Some(PathBuf::from(clean_first));
+            }
+        }
+    }
+
+    let file_path_buf = target_file;
 
     let app_state = AppState {
         active_file: Mutex::new(file_path_buf.clone()),

@@ -35,8 +35,11 @@
     "shortDescription": "Publication-grade Markdown editor and standalone viewer",
     "longDescription": "Publication-grade Markdown editor and standalone viewer by The Software Co.",
     "icon": [
-      "../favicon.ico",
-      "../favicon.svg"
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
     ],
     "fileAssociations": [
       {
