@@ -13,6 +13,7 @@ Thumbs.db
 # Test Exports & Generated Artifacts
 *.html
 !template.html
+!dist/index.html
 *.pdf
 
 # Temporary build outputs

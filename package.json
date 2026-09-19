@@ -1,19 +1,38 @@
 {
   "name": "dotmd",
   "version": "1.0.0",
-  "description": "dot md - Turn Markdown into publication-grade editorial documents with instant live reload across Windows, macOS, and Linux",
+  "description": "Publication-grade Markdown editor and standalone viewer with instant live reload across Windows, macOS, and Linux",
   "main": "bin/cli.js",
   "bin": {
     "dotmd": "./bin/cli.js",
     "dot-md": "./bin/cli.js"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "dist",
+    "scripts",
+    "installer",
+    "favicon.ico",
+    "favicon.svg",
+    "template.html",
+    "setup.bat",
+    "uninstall.bat",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
   },
   "scripts": {
     "start": "node bin/cli.js sample.md",
     "export": "node bin/cli.js sample.md --export",
     "test": "node test/toc-test.js",
     "build": "tauri build",
+    "build:launcher": "powershell -ExecutionPolicy Bypass -File scripts/build-launcher.ps1",
     "install:desktop": "node bin/cli.js --install",
     "uninstall:desktop": "node bin/cli.js --uninstall",
+    "generate:shell": "node scripts/generate-shell.js",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build"

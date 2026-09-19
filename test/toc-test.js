@@ -409,6 +409,14 @@ assert.strictEqual(pkgJson.author, 'The Software Co.', 'package.json author must
 const cargoContent = fs.readFileSync(path.join(__dirname, '..', 'src-tauri', 'Cargo.toml'), 'utf8');
 assert(cargoContent.includes('authors = ["The Software Co."]'), 'Cargo.toml authors must be ["The Software Co."]');
 
-console.log('✔ All TOC, Outline, Responsive, Zen, Wide, Raw, Logo, Favicon, Table Tools, ASCII Aligner, Print Pagination, Toast, Client JS, In-Page Search, Headless PDF, YAML Frontmatter, Interactive Tasks, Windows, macOS, Linux & Industry Standard Installer checks passed successfully.');
+// Test 12: Verify Lossless Native Vector Diagram Pan & Zoom
+const templateSrc = fs.readFileSync(path.join(__dirname, '..', 'lib', 'template.js'), 'utf8');
+assert(templateSrc.includes('applyViewBox'), 'applyViewBox missing in template.js');
+assert(templateSrc.includes('zoomAtPoint'), 'zoomAtPoint missing in template.js');
+assert(templateSrc.includes('.diagram-viewport'), '.diagram-viewport missing in template.js');
+assert(!templateSrc.includes('.diagram-canvas {'), 'Legacy .diagram-canvas CSS should be removed');
+assert(templateSrc.includes('diagram-zoom-badge'), 'diagram-zoom-badge missing in template.js');
+
+console.log('✔ All TOC, Outline, Responsive, Zen, Wide, Raw, Logo, Favicon, Table Tools, ASCII Aligner, Print Pagination, Toast, Client JS, In-Page Search, Headless PDF, YAML Frontmatter, Interactive Tasks, Windows, macOS, Linux, Industry Standard Installers & Lossless Vector Zoom checks passed successfully.');
 
 
